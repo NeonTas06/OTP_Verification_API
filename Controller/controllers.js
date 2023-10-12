@@ -6,6 +6,11 @@ dotenv.config();
 export class Procontroller {
   async requestOtp(req, res) {
     let { msisdn } = req.body;
+    if (!msisdn) {
+      return res
+        .status(400)
+        .json({ error: "Missing 'msisdn' in the request." });
+    }
     try {
       const encodedParams = new URLSearchParams();
       encodedParams.set("key", `${process.env.KEY}`);
@@ -34,6 +39,11 @@ export class Procontroller {
 
   async verifyOtp(req, res) {
     const { pin, token } = req.body;
+    if (!pin || !token) {
+      return res
+        .status(400)
+        .json({ error: "Missing 'pin' or 'token' in the request." });
+    }
     try {
       const encodedParams = new URLSearchParams();
       encodedParams.set("pin", pin);
